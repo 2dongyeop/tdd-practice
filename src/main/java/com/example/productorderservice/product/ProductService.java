@@ -21,6 +21,7 @@ public class ProductService {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<Void> addProduct(@RequestBody final AddProductRequest request) {
         final Product product = new Product(request.name(), request.price(), request.discountPolicy());
 
