@@ -1,10 +1,11 @@
 package com.example.productorderservice.product;
 
-import com.fasterxml.classmate.util.ConcurrentTypeCache;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Repository
 public class ProductRepository {
 
     private Long sequence = 0L;

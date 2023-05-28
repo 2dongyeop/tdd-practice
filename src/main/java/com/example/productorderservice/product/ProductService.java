@@ -1,5 +1,10 @@
 package com.example.productorderservice.product;
 
+
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+@Component
 public class ProductService {
 
     private final ProductPort productPort;
@@ -8,7 +13,7 @@ public class ProductService {
         this.productPort = productPort;
     }
 
-
+    @Transactional
     public void addProduct(final AddProductRequest request) {
         final Product product = new Product(request.name(), request.price(), request.discountPolicy());
 
