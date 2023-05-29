@@ -40,11 +40,15 @@ public class ProductService {
         return ResponseEntity.ok(response);
     }
 
-    public void updateProduct(final Long productId, final UpdateProductRequest request) {
+    @PatchMapping("/{productId}")
+    @Transactional
+    public ResponseEntity<Void> updateProduct(@PathVariable final Long productId, @RequestBody final UpdateProductRequest request) {
         final Product product = productPort.getProduct(productId);
         product.update(request.name(), request.price(), request.discountPolicy());
 
         //변경 감지가 알아서 될 텐데 왜 저장을 굳이?
         productPort.save(product);
+
+        return ResponseEntity.ok().build();
     }
 }

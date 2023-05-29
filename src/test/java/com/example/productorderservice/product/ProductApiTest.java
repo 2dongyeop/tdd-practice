@@ -1,13 +1,22 @@
 package com.example.productorderservice.product;
 
 import com.example.productorderservice.ApiTest;
+import io.restassured.RestAssured;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.productorderservice.product.ProductSteps.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ProductApiTest extends ApiTest {
+
+    @Autowired private ProductRepository productRepository;
 
     @Test
     public void 상품등록() throws Exception {
@@ -16,7 +25,7 @@ class ProductApiTest extends ApiTest {
 
         final var response = 상품등록요청(request);
 
-        Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
 
 
@@ -30,7 +39,21 @@ class ProductApiTest extends ApiTest {
 
         final var response = 상품조회요청(productId);
 
-        Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        Assertions.assertThat(response.jsonPath().getString("name")).isEqualTo("상품명");
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.jsonPath().getString("name")).isEqualTo("상품명");
+    }
+
+
+    @Test
+    @Transactional
+    public void 상품수정() throws Exception {
+
+        ProductSteps.상품등록요청(ProductSteps.상품등록요청_생성());
+        final long productId = 1L;
+
+        final ExtractableResponse<Response> response = 상품수정요청(productId);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(productRepository.findById(1L).get().getName()).isEqualTo("상품 수정");
     }
 }
