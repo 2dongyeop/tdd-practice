@@ -1,15 +1,11 @@
 package com.example.productorderservice.product;
 
 import com.example.productorderservice.ApiTest;
-import io.restassured.RestAssured;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import static com.example.productorderservice.product.ProductSteps.상품등록요청;
-import static com.example.productorderservice.product.ProductSteps.상품등록요청_생성;
+import static com.example.productorderservice.product.ProductSteps.*;
 
 class ProductApiTest extends ApiTest {
 
@@ -32,11 +28,7 @@ class ProductApiTest extends ApiTest {
         //등록한 상품의 번호
         final Long productId = 1L;
 
-        final var response = RestAssured.given().log().all()
-                .when()
-                .get("/products/{productId}", productId)
-                .then().log().all()
-                .extract();
+        final var response = 상품조회요청(productId);
 
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         Assertions.assertThat(response.jsonPath().getString("name")).isEqualTo("상품명");
