@@ -2,45 +2,38 @@ package com.example.productorderservice.order;
 
 import com.example.productorderservice.product.DiscountPolicy;
 import com.example.productorderservice.product.Product;
+import com.example.productorderservice.product.ProductService;
+import com.example.productorderservice.product.ProductSteps;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 class OrderServiceTest {
 
+    @Autowired
     private OrderService orderService;
-    private OrderPort orderPort;
-    private OrderRepository orderRepository;
 
-    @BeforeEach
-    void setUp() {
-        orderRepository = new OrderRepository();
-        orderPort = getStubOrderPort();
-        orderService = new OrderService(orderPort);
-    }
+    @Autowired
+    private ProductService productService;
 
 
     @Test
     public void 상품주문() throws Exception {
 
-        final Long productId = 1L;
-        final int quantity = 2;
-        final CreateOrderRequest request = new CreateOrderRequest(productId, quantity);
+        productService.addProduct(ProductSteps.상품등록요청_생성());
+
+        final CreateOrderRequest request = 상품주문요청_생성();
 
         orderService.createOrder(request);
 
     }
 
-    private OrderPort getStubOrderPort() {
-        return new OrderPort() {
-            @Override
-            public Product getProductById(Long productId) {
-                return new Product("상품명", 1000, DiscountPolicy.NONE);
-            }
-
-            @Override
-            public void save(Order order) {
-                orderRepository.save(order);
-            }
-        };
+    private static CreateOrderRequest 상품주문요청_생성() {
+        final Long productId = 1L;
+        final int quantity = 2;
+        final CreateOrderRequest request = new CreateOrderRequest(productId, quantity);
+        return request;
     }
 }
