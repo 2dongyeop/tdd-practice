@@ -1,6 +1,7 @@
 package com.example.productorderservice.payment;
 
 import com.example.productorderservice.order.Order;
+import com.example.productorderservice.order.OrderRepository;
 import com.example.productorderservice.product.DiscountPolicy;
 import com.example.productorderservice.product.Product;
 import org.springframework.stereotype.Component;
@@ -9,17 +10,18 @@ import org.springframework.stereotype.Component;
 public class PaymentAdapter implements PaymentPort {
 
     private final PaymentGateway paymentGateway;
+    private final PaymentRepository paymentRepository;
+    private final OrderRepository orderRepository;
 
-    public PaymentAdapter(final PaymentGateway paymentGateway, final PaymentRepository paymentRepository) {
+    public PaymentAdapter(final PaymentGateway paymentGateway, final PaymentRepository paymentRepository, OrderRepository orderRepository) {
         this.paymentGateway = paymentGateway;
         this.paymentRepository = paymentRepository;
+        this.orderRepository = orderRepository;
     }
-
-    private final PaymentRepository paymentRepository;
 
     @Override
     public Order getOrder(final Long orderId) {
-        return new Order(new Product("상품1", 1000, DiscountPolicy.NONE), 2);
+        return orderRepository.findById(orderId).orElseThrow(IllegalArgumentException::new);
     }
 
     @Override
