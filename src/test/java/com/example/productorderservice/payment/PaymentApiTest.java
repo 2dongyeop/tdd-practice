@@ -1,22 +1,13 @@
 package com.example.productorderservice.payment;
 
 import com.example.productorderservice.ApiTest;
-import com.example.productorderservice.order.OrderService;
 import com.example.productorderservice.order.OrderSteps;
-import com.example.productorderservice.product.ProductService;
 import com.example.productorderservice.product.ProductSteps;
-import io.restassured.RestAssured;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 import static com.example.productorderservice.payment.PaymentSteps.주문결제요청;
-import static com.example.productorderservice.payment.PaymentSteps.주문결제요청_생성;
 
 class PaymentApiTest extends ApiTest {
 

@@ -1,5 +1,8 @@
 package com.example.productorderservice.product;
 
+import com.example.productorderservice.product.application.GetProductResponse;
+import com.example.productorderservice.product.application.service.ProductService;
+import com.example.productorderservice.product.application.service.UpdateProductRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
