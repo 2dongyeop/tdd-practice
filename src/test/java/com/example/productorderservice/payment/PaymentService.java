@@ -1,9 +1,15 @@
 package com.example.productorderservice.payment;
 
 import com.example.productorderservice.order.Order;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Component
+@RequestMapping("/payments")
 public class PaymentService {
 
     private final PaymentPort paymentPort;
@@ -12,7 +18,8 @@ public class PaymentService {
         this.paymentPort = paymentPort;
     }
 
-    public void payment(final PaymentRequest request) {
+    @PostMapping
+    public ResponseEntity<Void> payment(@RequestBody final PaymentRequest request) {
 
         final Order order = paymentPort.getOrder(request.orderId());
 
@@ -20,6 +27,8 @@ public class PaymentService {
 
         paymentPort.pay(payment.getPrice(), payment.getCardNumber());
         paymentPort.save(payment);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
 
